@@ -8,6 +8,8 @@ import {
 import auth from "../../firebase.init";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
+import axios from "axios";
+import useToken from "../../hooks/useToken";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,12 +20,13 @@ const Login = () => {
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail, sending, passwordResetError] =
     useSendPasswordResetEmail(auth);
+  const [token] = useToken(user);
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [user, navigate, from]);
+  }, [token, navigate, from]);
 
   const {
     register,
@@ -42,8 +45,8 @@ const Login = () => {
     );
   }
 
-  const onSubmit = (data) => {
-    signInWithEmailAndPassword(data.email, data.password);
+  const onSubmit = async (data) => {
+    await signInWithEmailAndPassword(data.email, data.password);
   };
 
   // password reset work remaining

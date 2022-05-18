@@ -7,11 +7,13 @@ import {
 import auth from "../../firebase.init";
 import { useLocation, useNavigate } from "react-router-dom";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
+import useToken from "../../hooks/useToken";
 
 const Register = () => {
   const [createUserWithEmailAndPassword, user, loading, createError] =
     useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
   const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+  const [token] = useToken(user);
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -24,10 +26,10 @@ const Register = () => {
   let from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [user, navigate, from]);
+  }, [token, navigate, from]);
 
   // if (loading) {
   //   return <button className="btn loading">loading</button>;

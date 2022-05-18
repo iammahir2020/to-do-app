@@ -1,7 +1,9 @@
 import axios from "axios";
+import { signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import auth from "../../firebase.init";
@@ -11,25 +13,26 @@ import SingleTask from "./SingleTask";
 
 const Home = () => {
   const [close, setClose] = useState(false);
-  // const [tasks, setTasks] = useState([]);
-  const [user, loading, error] = useAuthState(auth);
-  // useEffect(() => {
-  //   const url = `https://shrouded-sea-13534.herokuapp.com/task?email=${user?.email}`;
-  //   const getTask = async () => {
-  //     const { data } = await axios.get(url);
-  //     setTasks(data);
-  //   };
-  //   getTask();
-  // }, [user, close]);
+  const navigate = useNavigate();
+  const [user, loading, authError] = useAuthState(auth);
 
   const {
     data: tasks,
     isLoading,
     refetch,
   } = useQuery("task", () =>
-    fetch(
-      `https://shrouded-sea-13534.herokuapp.com/task?email=${user?.email}`
-    ).then((res) => res.json())
+    fetch(`http://localhost:5000/task?email=${user?.email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((res) => {
+      if (res.status === 403 || res.status === 401) {
+        signOut(auth);
+        localStorage.removeItem("accessToken");
+        navigate("/login");
+      }
+      return res.json();
+    })
   );
 
   if (isLoading) {
@@ -47,7 +50,7 @@ const Home = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const url = `https://shrouded-sea-13534.herokuapp.com/task?id=${_id}`;
+        const url = `http://localhost:5000/task?id=${_id}`;
         const { data } = await axios.delete(url);
         if (data.acknowledged) {
           // console.log("asdasd");
@@ -60,7 +63,7 @@ const Home = () => {
 
   const handleCompleteTask = async (_id) => {
     console.log(_id);
-    const url = `https://shrouded-sea-13534.herokuapp.com/task?id=${_id}`;
+    const url = `http://localhost:5000/task?id=${_id}`;
     const { data } = await axios.put(url, { complete: true });
     if (data.acknowledged) {
       toast.success("Task Complete");

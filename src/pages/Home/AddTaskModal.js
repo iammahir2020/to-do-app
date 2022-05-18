@@ -15,10 +15,7 @@ const AddTaskModal = ({ user, setClose, refetch }) => {
     };
     console.log(task);
 
-    const { data } = await axios.post(
-      "https://shrouded-sea-13534.herokuapp.com/task",
-      task
-    );
+    const { data } = await axios.post("http://localhost:5000/task", task);
     console.log(data);
     if (data.acknowledged) {
       toast.success("Task has been added");

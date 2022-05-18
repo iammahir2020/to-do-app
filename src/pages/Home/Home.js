@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuery } from "react-query";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading/Loading";
@@ -57,6 +58,17 @@ const Home = () => {
     });
   };
 
+  const handleCompleteTask = async (_id) => {
+    console.log(_id);
+    const url = `http://localhost:5000/task?id=${_id}`;
+    const { data } = await axios.put(url, { complete: true });
+    if (data.acknowledged) {
+      toast.success("Task Complete");
+      console.log(data);
+      refetch();
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-3 md:px-5 lg:px-0">
       <hr />
@@ -77,16 +89,23 @@ const Home = () => {
           refetch={refetch}
         ></AddTaskModal>
       )}
-      <h2 className="text-2xl font-semibold mb-5">Task List:{tasks.length}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {tasks?.map((task) => (
-          <SingleTask
-            key={task._id}
-            task={task}
-            handleDelete={handleDelete}
-          ></SingleTask>
-        ))}
-      </div>
+      {/* <h2 className="text-2xl font-semibold mb-5">Task List:{tasks.length}</h2> */}
+      {tasks.length === 0 ? (
+        <h2 className="text-2xl text-gray-500 font-semibold mb-5">
+          You have no task to do...
+        </h2>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {tasks?.map((task) => (
+            <SingleTask
+              key={task._id}
+              task={task}
+              handleDelete={handleDelete}
+              handleCompleteTask={handleCompleteTask}
+            ></SingleTask>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

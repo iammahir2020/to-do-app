@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-toastify";
-import auth from "../../firebase.init";
+// import auth from "../../firebase.init";
 
 const AddTaskModal = ({ user, setClose, refetch }) => {
   // const [user, loading, error] = useAuthState(auth);
@@ -25,9 +25,9 @@ const AddTaskModal = ({ user, setClose, refetch }) => {
   };
   return (
     <div>
-      <input type="checkbox" id="addTask-modal" class="modal-toggle" />
-      <div class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
+      <input type="checkbox" id="addTask-modal" className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
           <label
             htmlFor="addTask-modal"
             className="btn btn-sm btn-circle absolute right-2 top-2"

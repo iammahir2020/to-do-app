@@ -76,8 +76,8 @@ const Home = () => {
         <h2 className="text-3xl font-semibold mb-5">Task List</h2>
         <label
           onClick={() => setClose(false)}
-          for="addTask-modal"
-          class="btn btn-secondary modal-button"
+          htmlFor="addTask-modal"
+          className="btn btn-secondary modal-button"
         >
           Add New Task
         </label>

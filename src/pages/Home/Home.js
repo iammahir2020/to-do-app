@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuery } from "react-query";
+import Swal from "sweetalert2";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading/Loading";
 import AddTaskModal from "./AddTaskModal";
@@ -35,7 +36,25 @@ const Home = () => {
   }
 
   const handleDelete = (_id) => {
-    console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const url = `http://localhost:5000/task?id=${_id}`;
+        const { data } = await axios.delete(url);
+        if (data.acknowledged) {
+          // console.log("asdasd");
+          refetch();
+        }
+        Swal.fire("Removed!", "Your task has been removed.", "success");
+      }
+    });
   };
 
   return (

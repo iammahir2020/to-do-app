@@ -8,9 +8,12 @@ const useToken = (user) => {
     const email = user?.user?.email;
     // const email = "";
     if (email) {
-      const result = await axios.post(`http://localhost:5000/token`, {
-        email,
-      });
+      const result = await axios.post(
+        `https://shrouded-sea-13534.herokuapp.com/token`,
+        {
+          email,
+        }
+      );
       localStorage.setItem("accessToken", result.data.token);
       setToken(result.data.token);
     }

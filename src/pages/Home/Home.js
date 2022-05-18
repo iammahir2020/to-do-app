@@ -21,11 +21,14 @@ const Home = () => {
     isLoading,
     refetch,
   } = useQuery("task", () =>
-    fetch(`http://localhost:5000/task?email=${user?.email}`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).then((res) => {
+    fetch(
+      `https://shrouded-sea-13534.herokuapp.com/task?email=${user?.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 403 || res.status === 401) {
         signOut(auth);
         localStorage.removeItem("accessToken");
@@ -50,7 +53,7 @@ const Home = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const url = `http://localhost:5000/task?id=${_id}`;
+        const url = `https://shrouded-sea-13534.herokuapp.com/task?id=${_id}`;
         const { data } = await axios.delete(url);
         if (data.acknowledged) {
           // console.log("asdasd");
@@ -63,7 +66,7 @@ const Home = () => {
 
   const handleCompleteTask = async (_id) => {
     console.log(_id);
-    const url = `http://localhost:5000/task?id=${_id}`;
+    const url = `https://shrouded-sea-13534.herokuapp.com/task?id=${_id}`;
     const { data } = await axios.put(url, { complete: true });
     if (data.acknowledged) {
       toast.success("Task Complete");

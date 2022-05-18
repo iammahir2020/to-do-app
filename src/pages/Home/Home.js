@@ -14,7 +14,7 @@ const Home = () => {
   // const [tasks, setTasks] = useState([]);
   const [user, loading, error] = useAuthState(auth);
   // useEffect(() => {
-  //   const url = `http://localhost:5000/task?email=${user?.email}`;
+  //   const url = `https://shrouded-sea-13534.herokuapp.com/task?email=${user?.email}`;
   //   const getTask = async () => {
   //     const { data } = await axios.get(url);
   //     setTasks(data);
@@ -27,9 +27,9 @@ const Home = () => {
     isLoading,
     refetch,
   } = useQuery("task", () =>
-    fetch(`http://localhost:5000/task?email=${user?.email}`).then((res) =>
-      res.json()
-    )
+    fetch(
+      `https://shrouded-sea-13534.herokuapp.com/task?email=${user?.email}`
+    ).then((res) => res.json())
   );
 
   if (isLoading) {
@@ -47,7 +47,7 @@ const Home = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const url = `http://localhost:5000/task?id=${_id}`;
+        const url = `https://shrouded-sea-13534.herokuapp.com/task?id=${_id}`;
         const { data } = await axios.delete(url);
         if (data.acknowledged) {
           // console.log("asdasd");
@@ -60,7 +60,7 @@ const Home = () => {
 
   const handleCompleteTask = async (_id) => {
     console.log(_id);
-    const url = `http://localhost:5000/task?id=${_id}`;
+    const url = `https://shrouded-sea-13534.herokuapp.com/task?id=${_id}`;
     const { data } = await axios.put(url, { complete: true });
     if (data.acknowledged) {
       toast.success("Task Complete");

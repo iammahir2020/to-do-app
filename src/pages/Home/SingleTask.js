@@ -3,7 +3,7 @@ import React from "react";
 const SingleTask = ({ task, handleDelete, handleCompleteTask }) => {
   const { _id, name, description } = task;
   return (
-    <div className="card border border-primary text-primary">
+    <div className="card border border-black text-black">
       <div className="card-body">
         {task.complete ? (
           <>

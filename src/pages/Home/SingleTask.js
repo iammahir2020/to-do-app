@@ -21,7 +21,7 @@ const SingleTask = ({ task, handleDelete, handleCompleteTask }) => {
           <button
             disabled={task.complete}
             onClick={() => handleCompleteTask(_id)}
-            className="btn btn-secondary text-primary"
+            className="btn btn-primary text-white"
           >
             Complete
           </button>

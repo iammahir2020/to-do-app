@@ -37,7 +37,7 @@ const Home = () => {
       return res.json();
     })
   );
-
+  // refetch();
   if (isLoading) {
     return <Loading></Loading>;
   }
